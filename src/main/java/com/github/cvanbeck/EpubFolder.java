@@ -7,15 +7,17 @@ import java.nio.file.Path;
 
 
 public class EpubFolder implements AutoCloseable {
+    private Path originalPath;
+    private Path path;
     public EpubFolder(String location){
         if(!location.endsWith(".epub")){
             throw new IllegalArgumentException("File must be of type .epub");
         }
 
-        Path oldPath = Path.of(location);
-        Path path = Path.of(location + ".zip");
+        this.originalPath = Path.of(location);
+        this.path = Path.of(location + ".zip");
         try {
-            Files.move(oldPath, path);
+            Files.move(originalPath, path);
             System.out.println(path.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -24,6 +26,6 @@ public class EpubFolder implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        return;
+        Files.move(path, originalPath);
     }
 }
