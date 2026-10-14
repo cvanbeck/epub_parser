@@ -3,7 +3,6 @@ package com.github.cvanbeck;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipFile;
 
@@ -22,7 +21,7 @@ public class EpubFolder implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws IOException {
         zipFile.close();
     }
 }
