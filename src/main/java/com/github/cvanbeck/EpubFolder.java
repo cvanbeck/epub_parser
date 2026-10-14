@@ -23,10 +23,9 @@ public class EpubFolder implements AutoCloseable {
         this.path = Path.of(location + ".zip");
 
         try {
-
-            Files.move(originalPath, path);
-            File file = new File(path.toUri());
+            File file = new File(originalPath.toUri());
             zipFile = new ZipFile(file);
+            System.out.println(zipFile.getEntry("mimetype"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -36,6 +35,5 @@ public class EpubFolder implements AutoCloseable {
     @Override
     public void close() throws Exception {
         zipFile.close();
-        Files.move(path, originalPath);
     }
 }
