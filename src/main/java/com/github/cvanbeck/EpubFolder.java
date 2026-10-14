@@ -12,19 +12,13 @@ public class EpubFolder implements AutoCloseable {
     private ZipFile zipFile;
 
 
-    public EpubFolder(String location){
+    public EpubFolder(String location) throws IOException {
         if(!location.endsWith(".epub")){
             throw new IllegalArgumentException("File must be of type .epub");
         }
-
         Path path = Path.of(location);
-        try {
-            File file = new File(path.toUri());
-            zipFile = new ZipFile(file);
-            System.out.println(zipFile.getEntry("mimetype"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        File file = new File(path.toUri());
+        zipFile = new ZipFile(file);
     }
 
     @Override
