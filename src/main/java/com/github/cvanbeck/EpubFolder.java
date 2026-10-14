@@ -10,8 +10,6 @@ import java.util.zip.ZipFile;
 
 public class EpubFolder implements AutoCloseable {
     private ZipFile zipFile;
-    private Path originalPath;
-    private Path path;
 
 
     public EpubFolder(String location){
@@ -19,14 +17,11 @@ public class EpubFolder implements AutoCloseable {
             throw new IllegalArgumentException("File must be of type .epub");
         }
 
-        this.originalPath = Path.of(location);
-        this.path = Path.of(location + ".zip");
-
+        Path path = Path.of(location);
         try {
-            File file = new File(originalPath.toUri());
+            File file = new File(path.toUri());
             zipFile = new ZipFile(file);
             System.out.println(zipFile.getEntry("mimetype"));
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
