@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
@@ -27,17 +28,18 @@ public class EpubFolder implements AutoCloseable {
 
 
     private void validateMimetype() throws MalformedEpubException, IOException {
-        try(InputStream mimetype = zipFile.getInputStream(zipFile.getEntry("mimetype"))){
+        ZipEntry entry = zipFile.getEntry("mimetype");
+
+        if(entry.equals(null)){
+            throw new MalformedEpubException("Mimetype missing");
+        }
+
+        try(InputStream mimetype = zipFile.getInputStream(entry)){
             String mimetypeContent = new String(mimetype.readAllBytes());
-            if(mimetypeContent.equals("application/epub+zip")){
-                System.out.println(mimetypeContent);
-                return;
-            } else {
+
+            if(!mimetypeContent.equals("application/epub+zip")) {
                 throw new MalformedEpubException("Incorrect Mimetype format");
             }
-        } catch (NullPointerException e) {
-            throw new MalformedEpubException("Mimetype Missing");
-        }
     };
 
 
