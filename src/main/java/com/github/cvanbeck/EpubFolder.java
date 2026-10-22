@@ -30,7 +30,7 @@ public class EpubFolder implements AutoCloseable {
     private void validateMimetype() throws MalformedEpubException, IOException {
         ZipEntry entry = zipFile.getEntry("mimetype");
 
-        if (entry.equals(null)) {
+        if (entry == null) {
             throw new MalformedEpubException("Mimetype missing");
         }
 
