@@ -2,7 +2,6 @@ package com.github.cvanbeck;
 
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
@@ -15,7 +14,6 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 
 public class EpubFolder implements AutoCloseable {
@@ -60,6 +58,7 @@ public class EpubFolder implements AutoCloseable {
 
     private String getContentLocation(ZipEntry xml) throws MalformedEpubException {
         // TODO: Update function to work with multiple rootfiles
+        // TODO: Sort out catch block madness
         try (InputStream input = zipFile.getInputStream(xml)){
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(input);
@@ -74,7 +73,7 @@ public class EpubFolder implements AutoCloseable {
             if(fullPathAttribute == null){
                 throw new MalformedEpubException("full-path attribute not found");
             }
-            
+
             String location = fullPathAttribute.getNodeValue();
             if(location.isBlank()){
                 throw new MalformedEpubException("full-path missing content");
