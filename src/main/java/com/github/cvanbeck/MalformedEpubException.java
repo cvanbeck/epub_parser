@@ -4,4 +4,8 @@ public class MalformedEpubException extends Exception {
     public MalformedEpubException(String message) {
         super(message);
     }
+
+    public MalformedEpubException(String message, Throwable e){
+        super(message, e);
+    }
 }
