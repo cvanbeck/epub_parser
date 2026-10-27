@@ -38,6 +38,10 @@ public class EpubFolder implements AutoCloseable {
         }
     }
 
+    public ZipEntry getPackageDocument() {
+        return packageDocument;
+    }
+
     private ZipEntry getContainerXml() throws  MalformedEpubException{
         ZipEntry containerXml = zipFile.getEntry("META-INF/container.xml");
         if (containerXml == null){
