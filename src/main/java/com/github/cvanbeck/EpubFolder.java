@@ -18,7 +18,7 @@ import java.util.zip.ZipFile;
 
 public class EpubFolder implements AutoCloseable {
     private ZipFile zipFile;
-    private ZipEntry content;
+    private ZipEntry packageDocument;
 
     public EpubFolder(String location) throws IOException, MalformedEpubException {
         Path path = Path.of(location);
