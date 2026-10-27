@@ -23,20 +23,35 @@ public class EpubFolder implements AutoCloseable {
     public EpubFolder(String location) throws IOException, MalformedEpubException {
         Path path = Path.of(location);
         File file = new File(path.toUri());
-
         if(!file.getName().endsWith(".epub")){
             throw new IllegalArgumentException("File must be of type .epub");
         }
 
         zipFile = new ZipFile(file);
-        validateMimetype();
+        try {
+            validateMimetype();
+            packageDocument = getPackageDocument(getContainerXml());
 
+        } catch (Exception e) {
+            zipFile.close();
+            throw e;
+        }
+    }
+
+    private ZipEntry getContainerXml() throws  MalformedEpubException{
         ZipEntry containerXml = zipFile.getEntry("META-INF/container.xml");
         if (containerXml == null){
             throw new MalformedEpubException("container.xml not found");
         }
-        System.out.println(getContentLocation(containerXml));
+        return containerXml;
+    }
 
+    private ZipEntry getPackageDocument(ZipEntry containerXml) throws MalformedEpubException, IOException{
+        ZipEntry packageDocument = zipFile.getEntry(getPackageDocumentLocation(containerXml));
+        if(packageDocument == null){
+            throw new MalformedEpubException("Package document not found");
+        }
+        return packageDocument;
     }
 
 
