@@ -56,7 +56,8 @@ public class EpubFolder implements AutoCloseable {
         }
     }
 
-    private String getContentLocation(ZipEntry xml) throws MalformedEpubException {
+
+    private String getPackageDocumentLocation(ZipEntry xml) throws MalformedEpubException, IOException {
         // TODO: Update function to work with multiple rootfiles
         // TODO: Sort out catch block madness
         try (InputStream input = zipFile.getInputStream(xml)){
