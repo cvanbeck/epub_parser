@@ -81,8 +81,10 @@ public class EpubFolder implements AutoCloseable {
             }
             return location;
 
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new RuntimeException(e);
+        } catch (ParserConfigurationException e) {
+            throw new IllegalStateException("Failed to configure XML parser", e);
+        } catch (SAXException e){
+            throw new MalformedEpubException("Invalid container.xml", e);
         }
     };
 
