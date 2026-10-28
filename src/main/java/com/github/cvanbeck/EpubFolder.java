@@ -18,7 +18,7 @@ import java.util.zip.ZipFile;
 
 public class EpubFolder implements AutoCloseable {
     private ZipFile zipFile;
-    private ZipEntry packageDocument;
+    private File packageDocument;
 
     public EpubFolder(String location) throws IOException, MalformedEpubException {
         Path path = Path.of(location);
@@ -38,7 +38,15 @@ public class EpubFolder implements AutoCloseable {
         }
     }
 
-    public ZipEntry getPackageDocument() {
+    public File getPackageDocument() {
+        return packageDocument;
+    }
+
+    private File getPackageDocument(ZipEntry containerXml) throws MalformedEpubException, IOException{
+        File packageDocument = new File(containerXml.getName());
+        if(packageDocument == null){
+            throw new MalformedEpubException("Package document not found");
+        }
         return packageDocument;
     }
 
@@ -48,14 +56,6 @@ public class EpubFolder implements AutoCloseable {
             throw new MalformedEpubException("container.xml not found");
         }
         return containerXml;
-    }
-
-    private ZipEntry getPackageDocument(ZipEntry containerXml) throws MalformedEpubException, IOException{
-        ZipEntry packageDocument = zipFile.getEntry(getPackageDocumentLocation(containerXml));
-        if(packageDocument == null){
-            throw new MalformedEpubException("Package document not found");
-        }
-        return packageDocument;
     }
 
 
