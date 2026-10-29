@@ -3,12 +3,13 @@
 
     import java.util.ArrayList;
     import java.util.HashMap;
+    import java.util.LinkedHashMap;
 
     public class Metadata {
-        private final HashMap<String, ArrayList<String>> metadata;
+        private final LinkedHashMap<String, ArrayList<String>> metadata;
 
         public Metadata(){
-            metadata = new HashMap<>();
+            metadata = new LinkedHashMap<>();
 
             // Required elements
             metadata.put("identifier", new ArrayList<>());
