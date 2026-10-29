@@ -1,8 +1,10 @@
 package com.github.cvanbeck;
 
 
+import com.github.cvanbeck.model.Metadata;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -12,15 +14,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 
 public class EpubFolder implements AutoCloseable {
     private ZipFile zipFile;
-    private File packageDocument;
+    private Document packageDocument;
 
-    public EpubFolder(String location) throws IOException, MalformedEpubException {
+    public EpubFolder(String location) throws IOException, MalformedEpubException, ParserConfigurationException, SAXException {
         Path path = Path.of(location);
         File file = new File(path.toUri());
         if(!file.getName().endsWith(".epub")){
@@ -30,7 +34,7 @@ public class EpubFolder implements AutoCloseable {
         zipFile = new ZipFile(file);
         try {
             validateMimetype();
-            packageDocument = getPackageDocument(getContainerXml());
+            packageDocument = getPackageDocument(zipFile.getEntry(getPackageDocumentLocation(getContainerXml())));
 
         } catch (Exception e) {
             zipFile.close();
@@ -38,16 +42,23 @@ public class EpubFolder implements AutoCloseable {
         }
     }
 
-    public File getPackageDocument() {
+    public Metadata getMetadata() {
+        return EpubParser.parseMetadata(packageDocument);
+
+    }
+
+    public Document getPackageDocument() {
         return packageDocument;
     }
 
-    private File getPackageDocument(ZipEntry containerXml) throws MalformedEpubException, IOException{
-        File packageDocument = new File(containerXml.getName());
-        if(packageDocument == null){
-            throw new MalformedEpubException("Package document not found");
+    private Document getPackageDocument(ZipEntry packageFile) throws SAXException, IOException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+        try (InputStream input = zipFile.getInputStream(packageFile)) {
+            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+            return builder.parse(input);
         }
-        return packageDocument;
     }
 
     private ZipEntry getContainerXml() throws  MalformedEpubException{
