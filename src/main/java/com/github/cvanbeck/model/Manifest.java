@@ -22,4 +22,13 @@ public class Manifest {
     public void addItem(Item item){
         items.add(item);
     }
+
+    @Override
+    public String toString(){
+        StringBuilder manifestString = new StringBuilder();
+        getItems().forEach(item -> {
+            manifestString.append("href: " + item.href() + ", id: " + item.id() + ", media-type: " + item.mediaType() + "\n");
+        });
+        return manifestString.toString();
+    }
 }
