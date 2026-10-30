@@ -10,12 +10,26 @@ public class Spine {
         itemRefs = new ArrayList<>();
     }
 
-    public List<String> getItemRefs(){
+    public List<String> getItemRef(){
         return itemRefs;
     }
+    public String getItemRef(int index){
+        return itemRefs.get(index);
+
+    }
+
 
     public void addItemRef(String ref){
         itemRefs.add(ref);
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder string = new StringBuilder();
+        getItemRef().forEach(itemRef -> {
+            string.append(itemRef + "\n");
+        });
+        return  string.toString();
     }
 }
 
