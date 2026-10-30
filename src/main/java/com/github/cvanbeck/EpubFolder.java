@@ -21,6 +21,9 @@ import java.util.zip.ZipFile;
 public class EpubFolder implements AutoCloseable {
     private final ZipFile zipFile;
     private final Document packageDocument;
+    private Metadata metadata;
+    private Manifest manifest;
+    private Spine spine;
 
     public EpubFolder(String location) throws IOException, MalformedEpubException, ParserConfigurationException, SAXException {
         Path path = Path.of(location);
@@ -38,15 +41,24 @@ public class EpubFolder implements AutoCloseable {
     }
 
     public Metadata getMetadata() {
-        return EpubParser.parseMetadata(packageDocument);
+        if(metadata == null) {
+            metadata =  EpubParser.parseMetadata(packageDocument);
+        }
+        return metadata;
     }
 
     public Manifest getManifest() {
-        return EpubParser.parseManifest(packageDocument);
+        if(manifest == null) {
+            manifest = EpubParser.parseManifest(packageDocument);
+        }
+        return manifest;
     }
 
     public Spine getSpine(){
-        return EpubParser.parseSpine(packageDocument);
+        if(spine == null){
+            spine = EpubParser.parseSpine(packageDocument);
+        }
+        return spine;
     }
 
     private void validateMimetype() throws MalformedEpubException, IOException {
