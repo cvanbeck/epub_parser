@@ -2,6 +2,7 @@ package com.github.cvanbeck;
 
 import com.github.cvanbeck.model.Manifest;
 import com.github.cvanbeck.model.Metadata;
+import com.github.cvanbeck.model.Spine;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -51,6 +52,17 @@ public class EpubParser {
         }
 
         return manifest;
+    }
+
+    public static Spine parseSpine(Document document){
+        NodeList nodeList = getNodeList(document, 5);
+        Spine spine = new Spine();
+        for(int i = 0; i < nodeList.getLength(); i++){
+            Node current = nodeList.item(i);
+            if(current.getNodeType() != Node.ELEMENT_NODE) {continue;}
+            spine.addItemRef(current.getAttributes().getNamedItem("idref").getNodeValue());
+        }
+        return spine;
     }
 
     private static NodeList getNodeList(Document document, int position){
