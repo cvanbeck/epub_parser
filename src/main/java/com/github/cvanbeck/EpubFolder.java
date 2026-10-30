@@ -3,6 +3,7 @@ package com.github.cvanbeck;
 
 import com.github.cvanbeck.model.Manifest;
 import com.github.cvanbeck.model.Metadata;
+import com.github.cvanbeck.model.Spine;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -42,6 +43,10 @@ public class EpubFolder implements AutoCloseable {
 
     public Manifest getManifest() {
         return EpubParser.parseManifest(packageDocument);
+    }
+
+    public Spine getSpine(){
+        return EpubParser.parseSpine(packageDocument);
     }
 
     private void validateMimetype() throws MalformedEpubException, IOException {
