@@ -26,7 +26,7 @@ public class EpubParser {
                 currentElement.add(current.getTextContent());
             } else {
                 System.err.println("WARNING: Unexpected '" + nodeName + "' element found whilst parsing metadata, this is not " +
-                        "a valid DC type");
+                        "a valid DC type and has been ignored.");
             }
         }
         return metadata;
