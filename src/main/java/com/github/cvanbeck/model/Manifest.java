@@ -19,6 +19,38 @@ public class Manifest {
         return items;
     };
 
+    public ArrayList<String> getAttributes(String attribute) {
+        ArrayList<String> attributes = new ArrayList<>();
+        getItems().forEach(item -> {
+            switch (attribute){
+                case "href":
+                    attributes.add(item.href());
+                    break;
+                case "id":
+                    attributes.add(item.id());
+                    break;
+                case "media-type":
+                    attributes.add(item.mediaType());
+                    break;
+                default:
+                    throw new RuntimeException("Attribute " + attribute + " doesn't exist");
+            }
+        });
+        return attributes;
+    }
+
+    public ArrayList<String> getHrefs(){
+        return getAttributes("href");
+    }
+
+    public ArrayList<String> getIds(){
+        return getAttributes("id");
+    }
+
+    public ArrayList<String> getMediaTypes(){
+        return getAttributes("mediaType");
+    }
+
     public void addItem(Item item){
         items.add(item);
     }
