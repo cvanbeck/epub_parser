@@ -26,6 +26,7 @@
             metadata.put("publisher", new ArrayList<>());
             metadata.put("relation", new ArrayList<>());
             metadata.put("rights", new ArrayList<>());
+            metadata.put("source", new ArrayList<>());
             metadata.put("subject", new ArrayList<>());
             metadata.put("type", new ArrayList<>());
         }
